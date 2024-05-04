@@ -56,6 +56,16 @@ if(isset($_POST['addCategory'])){
 
         }
 
+        // DELETE Category
+        if(isset($_GET['did'])){
+            $id = $_GET['did'];
+            $query = $pdo->prepare("delete from categories where id = :cId");
+            $query->bindParam('cId',$id);
+            $query->execute();
+            echo "<script>alert('deleted');
+            location.assign('viewCategory.php') 
+             </script>";
+        }
 
         // 
         if(isset($_POST['addProduct'])){
@@ -126,5 +136,7 @@ if(isset($_POST['addCategory'])){
 
 
         }
+
+
 
 ?>

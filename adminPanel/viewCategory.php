@@ -29,7 +29,7 @@ include('header.php');
                                     <td><?php echo $category['des']?></td>
                                     <td><img height="100px" src="img/<?php echo $category['image']?>" alt=""></td>
                                     <td><a href="editCategory.php?id=<?php echo $category['id'] ?>" class="btn btn-primary">Edit</a></td>
-                                    <td></td>
+                                    <td><a href="?did=<?php echo $category['id'] ?>" class="btn btn-danger">Delete</a></td>
                                 </tr>
                                <?php
                                }
