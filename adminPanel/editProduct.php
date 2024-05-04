@@ -73,7 +73,7 @@ if(isset($_GET['id'])){
                                 </select>
                              
                             </div>
-                            <button name="addProduct" class="btn btn-info mt-3">Add Product</button>
+                            <button name="editProduct" class="btn btn-info mt-3">Update Product</button>
                         </form>
                     </div>
                 </div>

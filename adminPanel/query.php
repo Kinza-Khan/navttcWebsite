@@ -92,6 +92,39 @@ if(isset($_POST['addCategory'])){
         }
 
         // udpated 
-        
+
+    if(isset($_POST['editProduct'])){
+            $productName = $_POST['pName'];
+            $productDes = $_POST['pDes'];
+            $productPrice = $_POST['pPrice'];
+            $productQty = $_POST['pQty'];
+            $categoryId = $_POST['cId'];
+            $pId = $_GET['id'];
+            $query = $pdo->prepare("update products set name = :pName , des = :pDes , price = :pPrice , qty = :pQty , c_id = :cId where id = :pId");
+            if(isset($_FILES['pImage'])){
+                $productImageName = $_FILES['pImage']['name'];
+                $productImageTmpName = $_FILES['pImage']['tmp_name'];
+                $extension = pathinfo( $productImageName , PATHINFO_EXTENSION);
+                $destination = "img/".$productImageName;
+                if($extension == "jpg" || $extension == "jpeg"  || $extension == "png"){
+                        if(move_uploaded_file($productImageTmpName,$destination)){
+                            $query = $pdo->prepare("update products set name = :pName , des = :pDes ,  price = :pPrice , qty = :pQty ,  image = :pImage , c_id = :cId  where id = :pId")    ;
+                            $query->bindParam('pImage',$productImageName);
+                        }
+                }
+            }
+                $query->bindParam('pName',$productName);
+                $query->bindParam('pDes',$productDes);
+                $query->bindParam('pPrice',$productPrice);
+                $query->bindParam('pQty',$productQty);
+                $query->bindParam('cId',$categoryId);
+                $query->bindParam('pId',$pId);
+                $query->execute();
+                echo "<script>alert('updated');
+               location.assign('viewProduct.php') 
+                </script>";
+
+
+        }
 
 ?>
