@@ -39,7 +39,7 @@ include('header.php');
                                     <td><?php echo $product['qty']?></td>
                                     <td><img height="100px" src="img/<?php echo $product['image']?>" alt=""></td>
                                     <td><?php echo $product['categoryName']?></td>
-                                    <td><a href="editCategory.php?id=<?php echo $product['id'] ?>" class="btn btn-primary">Edit</a></td>
+                                    <td><a href="editProduct.php?id=<?php echo $product['id'] ?>" class="btn btn-primary">Edit</a></td>
                                     <td></td>
                                 </tr>
                                <?php

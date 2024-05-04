@@ -91,5 +91,7 @@ if(isset($_POST['addCategory'])){
 
         }
 
+        // udpated 
+        
 
 ?>
