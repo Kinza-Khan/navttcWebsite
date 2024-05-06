@@ -19,9 +19,74 @@ if(isset($_POST['signUp'])){
            $query = $pdo->prepare("select id from users where email = :email");
            $query->bindParam('email', $userEmail);
            $query->execute();
-            
+           $user = $query->fetch(PDO::FETCH_ASSOC);
+           if($user){
+                $userEmailErr = "Email is already Exist";
+           }
+
         }
 
+        if(empty($_POST['userPassword'])){
+            $userPasswordErr = "Enter Your Password";
+        }
+
+        if(empty($_POST['userConfirmPassword'])){
+            $userConfirmPasswordErr = "Enter Your Confirm Password";
+        }
+        else{
+            if($userPassword !== $userConfirmPassword){
+                    $userConfirmPasswordErr = "password is not matched";
+            }
+        }
+        if(empty($userNameErr) && empty($userEmailErr) && empty($userPasswordErr) && empty($userConfirmPasswordErr) ){
+                $hashPassword = sha1($userPassword);
+                $query = $pdo->prepare("insert into users (name , email , password) values (:name , :email , :password)");
+                $query->bindParam('name',$userName);
+                $query->bindParam('email',$userEmail);
+                $query->bindParam('password',$hashPassword);
+                $query->execute();
+                echo "<script>alert('added');
+                location.assign('signup.php')
+                </script>";
+        }
+}
+
+
+
+
+if(isset($_POST['signIn'])){
+    $userEmail = $_POST['userEmail'];
+    $userPassword = $_POST['userPassword'];
+    if(empty($_POST['userEmail'])){
+        $userEmailErr = "Enter Your Email";
+    }
+    if(empty($_POST['userPassword'])){
+        $userPasswordErr = "Enter Your Password";
+    }
+    if( empty($userEmailErr) && empty($userPasswordErr)){
+        $hashPassword = sha1($userPassword);
+        $query = $pdo->prepare("select * from users where email = :email");
+        $query->bindParam('email',$userEmail);
+        $query->execute();
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        if($user){
+        if($user['password'] === $hashPassword){
+        echo "<script>alert('login');
+        location.assign('signup.php')
+        </script>";
+    }
+    else{
+        echo "<script>
+        location.assign('signin.php?error=invalid credentials')
+        </script>";
+    }
+}
+else{
+    echo "<script>
+    location.assign('signin.php?error=iuser not found');
+    </script>";
+}
+}
 }
 ?>
 
