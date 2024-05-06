@@ -7,7 +7,7 @@ if(isset($_POST['addCategory'])){
     $categoryImageTmpName = $_FILES['cImage']['tmp_name'];
     $extension = pathinfo($categoryImageName,PATHINFO_EXTENSION);
     $destination = "img/".$categoryImageName;
-   if($extension == "jpg" || $extension == "png" || $extension == "jpeg"){
+   if($extension == "jpg" || $extension == "png" || $extension == "jpeg" || $extension == "webp"){
     if(move_uploaded_file($categoryImageTmpName,$destination)){
         $query =  $pdo->prepare("insert into categories (name , des , image)  values (:categoryName , :categoryDes , :categoryImage)");
         $query->bindParam('categoryName',$categoryName);
@@ -38,7 +38,7 @@ if(isset($_POST['addCategory'])){
                 $categoryImageTmpName = $_FILES['cImage']['tmp_name'];
                 $extension = pathinfo( $categoryImageName , PATHINFO_EXTENSION);
                 $destination = "img/".$categoryImageName;
-                if($extension == "jpg" || $extension == "jpeg"  || $extension == "png"){
+                if($extension == "jpg" || $extension == "jpeg"  || $extension == "png" || $extension == "webp"){
                         if(move_uploaded_file($categoryImageTmpName,$destination)){
                             $query = $pdo->prepare("update categories set name = :cName , des = :cDes , image = :cImage where id = :cId")    ;
                             $query->bindParam('cImage',$categoryImageName);
@@ -78,7 +78,7 @@ if(isset($_POST['addCategory'])){
             $productImageTmpName = $_FILES['pImage']['tmp_name'];
             $destination = "img/".$productImageName;
             $extension = pathinfo($productImageName,PATHINFO_EXTENSION);
-            if($extension == "jpg" || $extension == "png" || $extension == "jpeg"){
+            if($extension == "jpg" || $extension == "png" || $extension == "jpeg" || $extension == "webp" ){
                 if(move_uploaded_file($productImageTmpName,$destination)){
                     $query =  $pdo->prepare("insert into products (name , des ,  qty , price ,image , c_id)  values (:productName , :productDes , :productQty ,:productPrice   , :productImageName , :cId)");
                     $query->bindParam('productName',$productName);
@@ -116,7 +116,7 @@ if(isset($_POST['addCategory'])){
                 $productImageTmpName = $_FILES['pImage']['tmp_name'];
                 $extension = pathinfo( $productImageName , PATHINFO_EXTENSION);
                 $destination = "img/".$productImageName;
-                if($extension == "jpg" || $extension == "jpeg"  || $extension == "png"){
+                if($extension == "jpg" || $extension == "jpeg"  || $extension == "png" || $extension == "webp"){
                         if(move_uploaded_file($productImageTmpName,$destination)){
                             $query = $pdo->prepare("update products set name = :pName , des = :pDes ,  price = :pPrice , qty = :pQty ,  image = :pImage , c_id = :cId  where id = :pId")    ;
                             $query->bindParam('pImage',$productImageName);

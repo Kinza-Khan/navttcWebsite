@@ -88,7 +88,7 @@
 		<div class="container">
 			<div class="row">
 				<?php
-				$query = $pdo->query("select * from categories");
+				$query = $pdo->query("select * from categories LIMIT 3");
 				$allCategories = $query->fetchAll(PDO::FETCH_ASSOC);
 				foreach(	$allCategories  as $category){
 				?>
