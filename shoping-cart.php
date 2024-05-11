@@ -32,6 +32,21 @@ if(isset($_POST['addToCart'])){
 		</script>";
 	}
 }
+
+// remove
+if(isset($_GET['remove'])){
+	$id = $_GET['remove'];
+	 foreach($_SESSION['cart'] as $key => $value){
+			if($id ==  $value['p_id']){
+					unset($_SESSION['cart'][$key]);
+					echo "<script>alert('cart remove successfully');
+		location.assign('shoping-cart.php')
+		</script>";
+					$_SESSION['cart'] = array_values($_SESSION['cart']);
+
+			}
+	 }
+}
 ?>
 	<!-- Shoping Cart -->
 	<form class="bg0 p-t-75 p-b-85">
@@ -52,7 +67,9 @@ if(isset($_POST['addToCart'])){
 									<?php
 										if(isset($_SESSION['cart'])){
 											
-											foreach($_SESSION['cart'] as $value){
+											foreach($_SESSION['cart'] as $key=> $value)
+											{
+
 
 										?>
 
@@ -77,7 +94,8 @@ if(isset($_POST['addToCart'])){
 											</div>
 										</div>
 									</td>
-									<td class="column-5">$ 16.00</td>
+									<td class="column-5"><?php echo $value['qty']*$value['p_price'] ?></td>
+									<td><a class="btn btn-danger" href="?remove=<?php echo $value['p_id']?>">Remove</a></td>
 								</tr>
 
 								<?php
