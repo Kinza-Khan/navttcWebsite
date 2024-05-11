@@ -1,6 +1,6 @@
 <?php
 include('adminPanel/dbcon.php');
-
+session_start();
 
 $userName =  $userEmail = $userPassword = $userConfirmPassword = "";
 $userNameErr =  $userEmailErr = $userPasswordErr = $userConfirmPasswordErr = "";
@@ -71,9 +71,27 @@ if(isset($_POST['signIn'])){
         $user = $query->fetch(PDO::FETCH_ASSOC);
         if($user){
         if($user['password'] === $hashPassword){
-        echo "<script>alert('login');
-        location.assign('signup.php')
-        </script>";
+
+            if($user['role_id'] == 1){
+                $_SESSION['adminId'] = $user['id'];
+                $_SESSION['adminEmail'] = $user['email'];
+
+                echo "<script>
+                location.assign('adminPanel/index.php');
+                </script>";
+            }
+            else if($user['role_id'] == 2){
+                $_SESSION['userId'] = $user['id'];
+                $_SESSION['user
+                
+                Email'] = $user['email'];
+
+                echo "<script>
+                location.assign('adminPanel/index.php');
+                </script>";
+            }
+
+        
     }
     else{
         echo "<script>

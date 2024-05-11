@@ -33,7 +33,7 @@ include('header.php');
                             </div>
                             <div class="form-group">
                               <label for="">Image</label>
-                              <input type="file" name="pImage" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                              <input multiple type="file" name="pImage" id="" class="form-control" placeholder="" aria-describedby="helpId">
                              
                             </div>
                             <div class="form-group">
