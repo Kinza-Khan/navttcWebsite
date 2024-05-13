@@ -5,32 +5,43 @@ include "header.php";
 
 
 <?php
-if(isset($_POST['addToCart'])){
-	if($_SESSION['cart']){
-
-		$id = array_column($_SESSION['cart'],'p_id');
-		if(in_array($_POST['pId'],$id)){
-			echo "<script>alert('product is already  added to the successfully');
-			location.assign('index.php')
-			</script>";
-		}
-		else{
-
-		$count = count($_SESSION['cart']);
-		$_SESSION['cart'][$count] = array("p_id"=>$_POST['pId'],"p_name"=>$_POST['pName'],"p_price"=>$_POST['pPrice'],"qty"=>$_POST['num-product'],"p_des"=>$_POST['pDes'],"p_image"=>$_POST['pImage']);
-		echo "<script>alert('cart added successfully');
-		location.assign('index.php')
-		</script>";
-	}
-	}
-
-
-	else{
-		$_SESSION['cart'][0] = array("p_id"=>$_POST['pId'],"p_name"=>$_POST['pName'],"p_price"=>$_POST['pPrice'],"qty"=>$_POST['num-product'],"p_des"=>$_POST['pDes'],"p_image"=>$_POST['pImage']);
-		echo "<script>alert('cart added successfully');
-		location.assign('index.php')
-		</script>";
-	}
+if (isset($_POST['addToCart'])) {
+    $pId = $_POST['pId'];
+    $pName = $_POST['pName'];
+    $pPrice = $_POST['pPrice'];
+    $quantityRequested = $_POST['num-product'];
+    
+    // Check if product is in stock
+    $query = $pdo->prepare("SELECT qty FROM products WHERE id = :pId");
+    $query->bindParam('pId', $pId);
+    $query->execute();
+    $product = $query->fetch(PDO::FETCH_ASSOC);
+    
+    if ($product['qty'] >= $quantityRequested) {
+        if (isset($_SESSION['cart'])) {
+            $id = array_column($_SESSION['cart'], 'p_id');
+            if (in_array($pId, $id)) {
+                echo "<script>alert('Product is already added to the cart');
+                      location.assign('index.php');
+                      </script>";
+            } else {
+                $count = count($_SESSION['cart']);
+                $_SESSION['cart'][$count] = array("p_id" => $pId, "p_name" => $pName, "p_price" => $pPrice, "qty" => $quantityRequested, "p_des" => $_POST['pDes'], "p_image" => $_POST['pImage']);
+                echo "<script>alert('Product added to cart successfully');
+                      location.assign('index.php');
+                      </script>";
+            }
+        } else {
+            $_SESSION['cart'][0] = array("p_id" => $pId, "p_name" => $pName, "p_price" => $pPrice, "qty" => $quantityRequested, "p_des" => $_POST['pDes'], "p_image" => $_POST['pImage']);
+            echo "<script>alert('Product added to cart successfully');
+                  location.assign('index.php');
+                  </script>";
+        }
+    } else {
+        echo "<script>alert('Sorry, this product is out of stock.');
+              location.assign('index.php');
+              </script>";
+    }
 }
 
 // remove
@@ -198,11 +209,23 @@ if(isset($_GET['remove'])){
 									$79.65
 								</span>
 							</div>
-						</div>
-
-						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+						</div>	
+							<?php
+							if(isset($_SESSION['userEmail'])){
+							?>
+						<a href="?checkout"  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
 							Proceed to Checkout
-						</button>
+						</a>
+						<?php
+							}
+							else{
+								?>
+									<a href="signin.php"  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+									Proceed to Checkout
+								</a>
+								<?php
+							}
+						?>
 					</div>
 				</div>
 			</div>

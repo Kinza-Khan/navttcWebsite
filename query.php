@@ -82,12 +82,11 @@ if(isset($_POST['signIn'])){
             }
             else if($user['role_id'] == 2){
                 $_SESSION['userId'] = $user['id'];
-                $_SESSION['user
-                
-                Email'] = $user['email'];
+                $_SESSION['userEmail'] = $user['email'];
+                $_SESSION['userName'] = $user['name'];
 
                 echo "<script>
-                location.assign('adminPanel/index.php');
+                location.assign('index.php');
                 </script>";
             }
 
@@ -105,6 +104,51 @@ else{
     </script>";
 }
 }
+}
+if(isset($_GET['checkout'])){
+    $userId = $_SESSION['userId'];
+    $userEmail = $_SESSION['userEmail'];
+    $userName = $_SESSION['userName'];
+    if(isset($_SESSION['cart'])){
+        if(count($_SESSION['cart'])>0){
+    foreach($_SESSION['cart'] as $key => $value){
+        $p_id = $value['p_id'];
+        $p_name = $value['p_name'];
+        $p_price = $value['p_price'];
+        $p_qty = $value['qty'];
+        $query = $pdo->prepare("insert into orders(uId , uName , uEmail , pId , pName , pPrice , pQty ) values(:uId , :uName , :uEmail , :pId , :pName , :pPrice , :pQty)");
+        $query->bindParam('uId',$userId);
+        $query->bindParam('uEmail',$userEmail);
+        $query->bindParam('uName',$userName);
+        $query->bindParam('pId',$p_id);
+        $query->bindParam('pName',$p_name);
+        $query->bindParam('pPrice',$p_price);
+        $query->bindParam('pQty',$p_qty);
+        $query->execute();
+
+
+        // update product 
+         // Subtract ordered quantity from products table
+         $updateQuery = $pdo->prepare("UPDATE products SET qty  = qty - :orderedQty WHERE id = :productId");
+         $updateQuery->bindParam('orderedQty', $p_qty);
+         $updateQuery->bindParam('productId', $p_id);
+         $updateQuery->execute();
+          echo "<script>
+          alert('order placed successfully')
+    location.assign('shoping-cart.php');
+    </script>";
+        
+
+    }
+}
+}
+else{
+    echo "<script>
+    alert('your cart is Empty')
+location.assign('shoping-cart.php');
+</script>";
+}
+    unset($_SESSION['cart']);
 }
 ?>
 
