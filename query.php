@@ -51,9 +51,6 @@ if(isset($_POST['signUp'])){
         }
 }
 
-
-
-
 if(isset($_POST['signIn'])){
     $userEmail = $_POST['userEmail'];
     $userPassword = $_POST['userPassword'];
@@ -125,8 +122,6 @@ if(isset($_GET['checkout'])){
         $query->bindParam('pPrice',$p_price);
         $query->bindParam('pQty',$p_qty);
         $query->execute();
-
-
         // update product 
          // Subtract ordered quantity from products table
          $updateQuery = $pdo->prepare("UPDATE products SET qty  = qty - :orderedQty WHERE id = :productId");
@@ -137,8 +132,6 @@ if(isset($_GET['checkout'])){
           alert('order placed successfully')
     location.assign('shoping-cart.php');
     </script>";
-        
-
     }
 }
 }
