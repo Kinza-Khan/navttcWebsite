@@ -141,6 +141,26 @@ else{
 location.assign('shoping-cart.php');
 </script>";
 }
+
+
+
+	// invoice table query
+	$invoice_query = $pdo->prepare("insert into invoice (u_id , u_name , u_email  , total_products , total_amount ) values (:u_id , :u_name , :u_email , :total_products , :total_amount)");
+	$invoice_query->bindParam('u_id', $userId);
+	$invoice_query->bindParam('u_name', $userName);
+	$invoice_query->bindParam('u_email', $userEmail);
+	$totalQty = 0;
+	$totalAmount = 0;
+	foreach ($_SESSION['cart'] as $key => $value) {
+		$totalQty += $value['qty'];
+		$totalAmount += $value['qty'] * $value['p_price'];
+		$invoice_query->bindParam('total_products', $totalQty);
+		$invoice_query->bindParam('total_amount', $totalAmount);
+	}
+
+	$invoice_query->execute();
+
+
     unset($_SESSION['cart']);
 }
 ?>
