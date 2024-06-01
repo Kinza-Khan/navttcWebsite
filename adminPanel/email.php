@@ -34,7 +34,14 @@ try {
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
+    $invoiceId = $_POST['invoiceId'];
+    $query = $pdo->prepare("update invoice set status = 'approve' where id = :id");
+    $query->bindParam('id',$invoiceId);
+    $query->execute();
     echo '<script>alert("Message has been sent");location.assign("index.php")</script>';
+
+
+
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

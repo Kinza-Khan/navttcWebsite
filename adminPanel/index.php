@@ -83,13 +83,23 @@ include('header.php');
                                     <td><?php echo $invoice['total_products']?></td>
                                     <td><?php echo $invoice['total_amount']?></td>
                                     <td><?php echo $invoice['status']?></td>
-                                    
+                                    <?php
+                                    if($invoice['status'] == 'pending'){
+                                    ?>
                                     <td>
                                         <form action="email.php" method="post">
+                                            <input type="hidden" name="invoiceId" value="<?php echo $invoice['id']?>">
                                             <input type="hidden" value="<?php echo $invoice['u_email']?>" name="userEmail">
-                                        <button type="submit" class="btn btn-sm btn-primary" name="sendEmail">Approve</button>
+                                        <button type="submit" class="btn btn-sm btn-primary" name="sendEmail"><?php echo $invoice['status']?></button>
                                         </form>
                                     </td>
+                                    <?php
+                                    }else{
+                                       ?>
+                                        <td><?php echo $invoice['status']?></td>
+                                       <?php
+                                    }
+                                    ?>
                                 </tr>
                                 <?php
                                 }
